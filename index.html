@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Happy Birthday Rori 🎉</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(45deg, #f8bbd0, #fce4ec, #ffe0f0, #f8bbd0);
+      background-size: 400% 400%;
+      animation: bgAnim 20s ease infinite;
+      overflow: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    @keyframes bgAnim {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .page {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.9);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    h1, .explosion {
+      color: #880e4f;
+      font-size: 2em;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease;
+    }
+
+    .explosion {
+      font-size: 3em;
+      color: #ad1457;
+      animation: pop 1s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes pop {
+      0% {transform: scale(0); opacity: 0;}
+      80% {transform: scale(1.1);}
+      100% {transform: scale(1); opacity: 1;}
+    }
+
+    button {
+      padding: 14px 30px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 14px;
+      background: #ff80ab;
+      color: white;
+      cursor: pointer;
+      animation: wiggle 2s infinite;
+      box-shadow: 0 0 15px #ff80ab;
+      transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+      background: #ff4081;
+      box-shadow: 0 0 25px #ff4081;
+      transform: scale(1.05);
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(1deg); }
+      50% { transform: rotate(-1deg); }
+      75% { transform: rotate(1deg); }
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1.4em;
+      color: #4a148c;
+      animation: fadeIn 1.5s ease 0.6s forwards;
+      opacity: 0;
+    }
+
+    @keyframes float {
+      0% {transform: translateY(0) rotate(0); opacity: 1;}
+      100% {transform: translateY(-100vh) rotate(720deg); opacity: 0;}
+    }
+
+    .floaty {
+      position: absolute;
+      bottom: -20px;
+      width: 10px;
+      height: 10px;
+      background-color: pink;
+      border-radius: 50%;
+      animation: float 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    #cardWrapper {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255,240,250,0.95);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px;
+    }
+
+    #card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 25px #ff80ab;
+      transform: rotateX(90deg);
+      transition: transform 0.7s ease-out;
+      perspective: 800px;
+      text-align: center;
+      padding: 20px;
+      max-width: 400px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      font-size: 1.1em;
+      color: #4a148c;
+      position: relative;
+    }
+
+    #card h2 {
+      color: #ad1457;
+      margin-bottom: 10px;
+    }
+
+    #closeBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background: #ff80ab;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff80ab;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #closeBtn:hover {
+      background: #ff4081;
+      box-shadow: 0 0 25px #ff4081;
+      transform: scale(1.05);
+    }
+
+    /* Explosion particles container */
+    #explosionContainer {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      overflow: visible;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 1;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes explode {
+      to {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(0);
+      }
+    }
+
+    /* Responsive text scaling */
+    @media (max-width: 480px) {
+      h1, .explosion {
+        font-size: 1.5em;
+      }
+
+      button {
+        font-size: 1em;
+        padding: 12px 24px;
+      }
+
+      #card {
+        font-size: 1em;
+        max-width: 90vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page active" id="page1">
+    <h1>I have no idea what I'm doing lol I only took one coding class</h1>
+    <button onclick="goToPage(2)">Continue</button>
+  </div>
+
+  <div class="page" id="page2">
+    <h1><strong>I know it's not much, but it's better than nothing</strong></h1>
+    <button onclick="goToPage(3)">Continue</button>
+  </div>
+
+  <div class="page" id="page3">
+    <div class="explosion">🎉 HAPPY BIRTHDAY RORI 🎉</div>
+    <div class="message">Even though I barely know you... you honestly seem pretty interesting.</div>
+    <button onclick="openCard()">Open your birthday card 💌</button>
+  </div>
+
+  <div id="cardWrapper" tabindex="0" role="dialog" aria-modal="true" aria-labelledby="cardTitle" aria-describedby="cardDesc">
+    <div id="card">
+      <h2 id="cardTitle">💖 Happy Birthday Rori 💖</h2>
+      <p id="cardDesc">
+        I know you don’t usually celebrate — but I wanted to make your day a little better anyway.<br><br>
+        You’re honestly pretty badass. You do things most people would find strange or even dangerous, and that’s what makes you stand out.<br><br>
+        We may not know each other well yet, but I’m interested in getting to know the real you.<br><br>
+        Hope this card brings a little extra brightness to your day.
+      </p>
+      <button id="closeBtn" onclick="closeCard()">Close</button>
+    </div>
+  </div>
+
+  <div id="explosionContainer"></div>
+
+  <script>
+    // Create floating bubbles in background
+    for (let i = 0; i < 60; i++) {
+      const floaty = document.createElement("div");
+      floaty.classList.add("floaty");
+      floaty.style.left = Math.random() * 100 + "vw";
+      floaty.style.width = floaty.style.height = Math.random() * 10 + 8 + "px";
+      floaty.style.background = ["#f48fb1", "#ce93d8", "#f06292", "#f8bbd0"][Math.floor(Math.random()*4)];
+      floaty.style.animationDuration = (5 + Math.random() * 5) + "s";
+      floaty.style.animationDelay = (Math.random() * 5) + "s";
+      document.body.appendChild(floaty);
+    }
+
+    function goToPage(n) {
+      const current = document.querySelector(".page.active");
+      const next = document.getElementById("page" + n);
+      if (current && next) {
+        current.classList.remove("active");
+        next.classList.add("active");
+      }
+    }
+
+    // Explosion particle effect
+    function createExplosion(x, y) {
+      const container = document.getElementById("explosionContainer");
+      const colors = ["#ff80ab", "#f06292", "#ce93d8", "#f48fb1", "#ad1457"];
+      const count = 25;
+
+      for(let i = 0; i < count; i++) {
+        const particle = document.createElement("div");
+        particle.classList.add("particle");
+        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.width = particle.style.height = (Math.random() * 8 + 4) + "px";
+
+        // Random direction and distance
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 100 + 50;
+
+        // Set custom CSS properties for animation
+        particle.style.setProperty("--tx", (Math.cos(angle) * distance) + "px");
+        particle.style.setProperty("--ty", (Math.sin(angle) * distance) + "px");
+
+        particle.style.left = x + "px";
+        particle.style.top = y + "px";
+        particle.style.animation = "explode 800ms ease-out forwards";
+
+        container.appendChild(particle);
+
+        // Remove after animation
+        particle.addEventListener("animationend", () => {
+          particle.remove();
+        });
+      }
+    }
+
+    function openCard() {
+      const wrapper = document.getElementById("cardWrapper");
+      const card = document.getElementById("card");
+
+      // Show wrapper and animate card open
+      wrapper.style.display = "flex";
+      setTimeout(() => {
+        card.style.transform = "rotateX(0deg)";
+      }, 50);
+
+      // Create explosion effect in center of viewport
+      const rect = card.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      createExplosion(x, y);
+
+      // Focus on the card for accessibility
+      wrapper.focus();
+    }
+
+    function closeCard() {
+      const wrapper = document.getElementById("cardWrapper");
+      const card = document.getElementById("card");
+
+      card.style.transform = "rotateX(90deg)";
+      setTimeout(() => {
+        wrapper.style.display = "none";
+      }, 500);
+    }
+  </script>
+
+</body>
+</html>
